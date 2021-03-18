@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<script>
+    function copyCode() {
+        let code = new URLSearchParams(window.location.search).get('code')
+        navigator.clipboard.writeText(code)
+        console.log('coppied code:\n' + code)
+    }
+</script>
+
+<head>
+    <title>TD Ameritrade Login</title>
+    <style>
+        body {
+            background-color: rgb(131, 240, 131)
+        }
+
+        .page {
+            position: relative;
+        }
+
+        .wrapper {
+            position: absolute;
+            text-align: center;
+            background-color: green;
+            border: 1px solid black;
+            color: white;
+            padding: 70px 0;
+            font-size: 30px;
+            width: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 80%);
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: 2px solid black;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=page>
+        <div class=wrapper>
+            Sucess!
+            <div class='firstLine'>
+                Click the button to copy your code
+            </div>
+
+            <button class='button' onClick='copyCode()'>Copy</button>
+
+            <div class='lastLine'>
+                input the code into the 'enter code' option under the TD Ameritrade tab on your sheet
+            </div>
+        </div>
+    </div>
+</body>
