@@ -1,24 +1,37 @@
 let BLOCK_LIST = []
 let tips;
 let NUM_EMPLOYEES = 8;
-let EMPLOYEE_LIST = ["Matt", "Drew", "Fred", "Jakob", "Sebastian", "Hannah", "John", "Cameron", "Conor", "Pual"];
+let EMPLOYEE_LIST = [];
 
 function setup() {
-    createCanvas(displayWidth, displayHeight);
+    EMPLOYEE_LIST = getEmployees()
+    console.log(EMPLOYEE_LIST)
+    createCanvas(windowWidth, windowHeight);
     background(220);
     for (let i = 1; i < NUM_EMPLOYEES + 1; i++) {
-        new Block(i * 30);
+        new Block((i * 50) + 100);
     }
     tips = createInput();
     tips.size(50, 20);
-    tips.position(165, 300)
-    button = createButton('Submit');
-    button.position(165, 340);
-    button.mousePressed(calc);
-    text("Total Tips", 165, 290);
-    text("Employee", 20, 20);
-    text("Hours", 110, 20);
-    text("Pay", 160, 20)
+    tips.position(width / 2.45, height * .67)
+
+    let submitButton = createButton('Submit');
+    submitButton.position(width / 2.45, height * .72);
+    submitButton.mousePressed(calc);
+
+    let addButton = createButton("Add Employee")
+    addButton.position(width / 1.5, height * .35);
+    addButton.mousePressed(addEmployee);
+
+    let removeButton = createButton("Remove Employee")
+    removeButton.position(width / 1.5, height * .45);
+    removeButton.mousePressed(removeEmployee);
+
+    textSize(20)
+    text("Total Tips", width / 2.5, height * .65);
+    text("Employee", (width / 6) - 13, 120);
+    text("Hours", width / 3.75, 120);
+    text("Pay", width / 3, 120)
 }
 
 function draw() {
@@ -27,14 +40,19 @@ function draw() {
 
 function Block(y) {
     this.y = y;
-    this.list = createList();
+    this.list = createSelect();
+    this.list.position((width / 6), this.y);
+    this.list.size(100, 25)
+    this.list.option("")
+    for (let e of EMPLOYEE_LIST) {
+        this.list.option(e)
+    }
     this.out = "$";
-    list.position(30, this.y);
     this.hours = createInput();
-    this.hours.size(15, 13);
-    this.hours.position(120, this.y)
-    this.show = function() {
-        text(this.out, 160, this.y + 5)
+    this.hours.size(25, 20);
+    this.hours.position(width / 3.5, this.y)
+    this.show = () => {
+        text(this.out, width / 3, this.y + 5)
     }
     BLOCK_LIST.push(this);
 }
@@ -64,9 +82,9 @@ function calc() {
     for (let i = 0; i < hourList.length; i++) {
         out.push([employeeList[i], +(perHour * hourList[i]).toFixed(2)])
     }
-    for(let i=0; i<out.length; i++) {
-        for(let j=0; j<BLOCK_LIST.length; j++) {
-            if(out[i][0] == BLOCK_LIST[j].list.value()) {
+    for (let i = 0; i < out.length; i++) {
+        for (let j = 0; j < BLOCK_LIST.length; j++) {
+            if (out[i][0] == BLOCK_LIST[j].list.value()) {
                 BLOCK_LIST[j].out = "$ " + out[i][1];
             }
         }
@@ -82,4 +100,72 @@ function createList() {
     })
     list.selected('');
     return list;
+}
+
+function addEmployee() {
+    let name = prompt("Enter the name of the employee you would like to add")
+    if (!name) return
+    setCookie('employees', getCookie('employees') + "," + name, 500)
+    EMPLOYEE_LIST.push(name);
+    updateList(name);
+}
+
+function removeEmployee() {
+    let name = prompt("Enter the name of the employee you would like to remove")
+    if (!name) return
+
+    employees = getEmployees();
+    index = employees.indexOf(name);
+    if (index != -1) {
+        employees.splice(index, 1);
+        EMPLOYEE_LIST.splice(EMPLOYEE_LIST.indexOf(name), 1)
+    } else {
+        alert('Employee ' + name + ' not found')
+        console.error('Employee ' + name + ' not found')
+    }
+    setCookie('employees', employees, 500)
+}
+
+function getEmployees() {
+    let cookies = [];
+    try {
+        cookies = getCookie('employees').split(",");
+    } catch(e) {
+        console.error(e)
+        let name = prompt('Add your first employee')
+        setCookie('employees', getCookie('employees') + "," + name, 500)
+        EMPLOYEE_LIST.push(name);
+        updateList(name);
+    }
+    return cookies
+}
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function updateList(name) {
+    // console.log(name);
+    if (!name) return
+    for (let block of BLOCK_LIST) {
+        // console.log('ADDING')
+        block.list.option(name)
+    }
 }
