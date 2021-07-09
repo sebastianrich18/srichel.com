@@ -10,7 +10,9 @@ let io = require('socket.io')(httpServer, {});
 //var certificate = fs.readFileSync('/etc/letsencrypt/live/www.srichel.com/cert.pem', 'utf8');
 
 //var credentials = {key: privateKey, cert: certificate};
-dice.diceHandler(io)
+app.get('/', (req, res) => {
+    res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+})
 app.use(express.static('public'))
 
 var httpServer = http.createServer(app);

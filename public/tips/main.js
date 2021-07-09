@@ -7,7 +7,6 @@ function setup() {
     EMPLOYEE_LIST = getEmployees()
     console.log(EMPLOYEE_LIST)
     createCanvas(windowWidth, windowHeight);
-    background(220);
     for (let i = 1; i < NUM_EMPLOYEES + 1; i++) {
         new Block((i * 50) + 100);
     }
@@ -26,15 +25,15 @@ function setup() {
     let removeButton = createButton("Remove Employee")
     removeButton.position(width / 1.5, height * .45);
     removeButton.mousePressed(removeEmployee);
+}
 
+function draw() {
+    background(220);
     textSize(20)
     text("Total Tips", width / 2.5, height * .65);
     text("Employee", (width / 6) - 13, 120);
     text("Hours", width / 3.75, 120);
     text("Pay", width / 3, 120)
-}
-
-function draw() {
     BLOCK_LIST.forEach(b => { b.show(); })
 }
 
@@ -69,8 +68,8 @@ function calc() {
     let out = [];
     vals.forEach(v => {
         if (v[0] != "") {
-            totalHours += parseInt(v[1]);
-            hourList.push(parseInt(v[1]));
+            totalHours += parseFloat(v[1]);
+            hourList.push(parseFloat(parseFloat(v[1]).toFixed(2)));
             employeeList.push(v[0]);
 
         }
@@ -80,7 +79,7 @@ function calc() {
     // console.table(employeeList);
     let perHour = totalTips / totalHours;
     for (let i = 0; i < hourList.length; i++) {
-        out.push([employeeList[i], +(perHour * hourList[i]).toFixed(2)])
+        out.push([employeeList[i], (perHour * hourList[i]).toFixed(2)])
     }
     for (let i = 0; i < out.length; i++) {
         for (let j = 0; j < BLOCK_LIST.length; j++) {
@@ -89,6 +88,11 @@ function calc() {
             }
         }
     }
+    reDraw()
+
+}
+
+function reDraw() {
 
 }
 
