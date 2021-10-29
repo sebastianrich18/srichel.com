@@ -168,7 +168,10 @@
     "docDescription": "Time in ms before forcing a reload if app is still not listening/has still note sent ready"
   },
   "cron_restart": {
-    "type": "string",
+    "type": [
+      "string",
+      "number"
+    ],
     "alias": "cron",
     "docDescription": "A cron pattern to restart your app"
   },
@@ -297,7 +300,7 @@
     "docDescription": "Rename the NODE_APP_INSTANCE environment variable"
   },
   "pmx": {
-    "type": "boolean",
+    "type": ["boolean", "string"],
     "default": true,
     "docDefault": "True",
     "docDescription": "Enable or disable pmx wrapping"

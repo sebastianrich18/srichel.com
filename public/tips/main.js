@@ -1,9 +1,11 @@
 let BLOCK_LIST = []
 let tips;
-let NUM_EMPLOYEES = 8;
+let NUM_EMPLOYEES = 14;
 let EMPLOYEE_LIST = [];
+let bg;
 
 function setup() {
+    bg = loadImage("Scott1.jpeg")
     EMPLOYEE_LIST = getEmployees()
     console.log(EMPLOYEE_LIST)
     createCanvas(windowWidth, windowHeight);
@@ -28,7 +30,8 @@ function setup() {
 }
 
 function draw() {
-    background(220);
+    background(bg);
+    fill(255)
     textSize(20)
     text("Total Tips", width / 2.5, height * .65);
     text("Employee", (width / 6) - 13, 120);
