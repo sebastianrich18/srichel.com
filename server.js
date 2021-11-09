@@ -17,11 +17,11 @@ app.get("*", (req, res, next) => { // log all requests
     ip = ip[ip.length-1]
     let client = new WebServiceClient("632311", "qx13ZC8CxNdynVSU", {host: "geolite.info"})
     client.city(ip)
-    .then(res => {
-        let str = new Date().toISOString().slice(0, 16).replace('T', ' ')
-        str += " " + ip + " made request to " + (req.originalUrl == "/" ? "RICK ROLLED" : req.originalUrl)
-        str += " from " + res.city.names.en + ", " + res.subdivisions[0].isoCode + " " + res.registeredCountry.isoCode
-        console.log(str)
+    .then(res => {        
+        let city = (res.city.names && res.city.names.en) ? res.city.names.en : "?"
+        let state = res.registeredCountry.isoCode ? res.registeredCountry.isoCode : "?"
+        let country = (res.subdivisions && res.subdivisions[0].isoCode) ? res.subdivisions[0].isoCode : "?"
+        console.log(req.method, req.originalUrl, ip, city, state, country)
     })
     .catch(error => console.log(error))
     .then(next())

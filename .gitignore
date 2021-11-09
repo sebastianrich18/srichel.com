@@ -1,0 +1,6 @@
+secret.py
+node_modules
+__pycache__
+cronLog.txt
+package.json
+package-lock.json
