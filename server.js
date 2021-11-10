@@ -18,9 +18,9 @@ app.get("*", (req, res, next) => { // log all requests
     let client = new WebServiceClient("632311", "qx13ZC8CxNdynVSU", {host: "geolite.info"})
     client.city(ip)
     .then(res => {        
-        let city = (res.city.names && res.city.names.en) ? res.city.names.en : "?"
-        let state = res.registeredCountry.isoCode ? res.registeredCountry.isoCode : "?"
-        let country = (res.subdivisions && res.subdivisions[0].isoCode) ? res.subdivisions[0].isoCode : "?"
+        let city = (res != undefined && res.city != undefined && res.city.names != undefined && res.city.names.en != undefined) ? res.city.names.en : "?"
+        let state = (res != undefined && res.registeredCountry != undefined && res.registeredCountry.isoCode != undefined) ? res.registeredCountry.isoCode : "?"
+        let country = (res.subdivisions != undefined && res.subdivisions[0].isoCode != undefined) ? res.subdivisions[0].isoCode : "?"
         console.log(req.method, req.originalUrl, ip, city, state, country)
     })
     .catch(error => console.log(error))
